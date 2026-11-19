@@ -1,0 +1,69 @@
+{
+  "name": "Handoff",
+  "slug": "handoff-sitter-briefing",
+  "tagline": "Write your house info once and send any babysitter or grandparent a timed plan for tonight in 30 seconds.",
+  "problem": "Every date night, parents retype the same babysitter note: bedtime routine, allergies, emergency numbers, Wi-Fi, screen rules, plus the parts that change each night (who's coming, which kids, when you're back). Babysitter checklist sites and printables exist because people keep rewriting this info, and their usual fix is a static template. A static template can't adapt to tonight or turn 'bath at 7, lights out at 7:45' into real clock times. The tools that do exist are cloud apps that need sitters to make accounts, or generic note templates. Parents need a private, offline builder that turns saved info into a clean, plain-text briefing for tonight that they can send through any messaging app.",
+  "evidence": [
+    {
+      "source": "https://checklist.com/babysitter-checklist",
+      "note": "Its checklist lets you remove what doesn't apply and save a copy, a sign that parents keep starting the same sitter note from scratch each visit."
+    },
+    {
+      "source": "https://www.nurturelife.com/blog/information-leave-babysitter-checklist/",
+      "note": "Guides list the same recurring sections every time: allergies (food, medication, environmental), medications, and a bedtime routine with times, stories and comfort items."
+    },
+    {
+      "source": "https://www.statefarm.com/simple-insights/family/prepare-your-babysitter-for-emergencies",
+      "note": "Recommends an emergency info card (numbers, hospital preference, what to do if something goes wrong), which parents have to keep current."
+    },
+    {
+      "source": "https://www.med.umich.edu/mott/pdf/babysitter-info-guide.pdf",
+      "note": "Children's hospital publishes a fill-in babysitter info guide, so the need is real, but the answer is a PDF that has to be refilled by hand."
+    },
+    {
+      "source": "https://sites.google.com/view/laszloapps/laszloappshome/babysitter-app",
+      "note": "Existing apps pitch 'save routines, health notes, emergency contacts and share with sitters', which validates demand, but they tend to be account-based and don't build a timed plan for tonight."
+    },
+    {
+      "source": "https://www.moritzfinedesigns.com/?p=12386",
+      "note": "Commenters on a family-info tracker post wish they could share kids' info with grandparents and keep it updated without being asked again and again. Handoff covers that for caregiving info."
+    }
+  ],
+  "target_users": "Parents of babies through about 10-year-olds who regularly hand their kids to babysitters, grandparents, friends or a co-parent, and who want one up-to-date source they can share as text without any app or account on the sitter's side.",
+  "core_features": [
+    "Household profile, entered once: kids (name, age/birthday, allergies with severity, medications with dose notes, comfort items, 'what calms them'), emergency contacts (with tap-to-copy), house info (address, Wi-Fi name/password, nearest urgent care, door code, pet notes), and house rules (screen time, snacks, off-limits rooms). Each is a structured card with add/edit/reorder.",
+    "Routine templates per kid with relative steps: each step has a label and an offset from bedtime (e.g. 'Dinner -90 min', 'Bath -45 min', 'Two books -15 min', 'Lights out 0', 'Check on her +30 min'). Tonight's builder turns them into real clock times from that kid's bedtime, and on a later bedtime ('Friday night = +30 min') every step shifts automatically.",
+    "Tonight builder (the hook): pick the caregiver (saved list: 'Maya, sitter', 'Grandma'), tick which kids are home, set leave time and back-by time, and toggle per-night extras (pizza money location, 'he may have dessert', special notes). It generates a merged, time-sorted timeline across all kids, e.g. 6:00 Dinner (both), 6:45 Leo bath, 7:15 Ava lights out, then a briefing preview.",
+    "Audience-aware briefing: each caregiver has a detail level (New sitter = everything, including address and how to reach urgent care; Regular = tonight's timeline, rules and changes since their last visit; Family = timeline and notes only). One tap shares a formatted plain-text briefing through the native share bridge, with a copy-to-clipboard fallback. Allergies and meds always appear at the top with a warning marker.",
+    "'What changed' tracking: every profile field stores a last-edited date, and each caregiver stores the date of their last briefing. Briefings for returning caregivers start with a 'New since last time' section (e.g. 'Ava: now allergic to cashews', 'New Wi-Fi password'). A Staleness check on Home flags anything not reviewed in 6+ months (e.g. 'Leo's medication dose last reviewed 7 months ago, still right?') with one-tap 'still accurate'.",
+    "Night log: each sent briefing is saved as a past handoff (date, caregiver, kids, times) with a quick after-note ('went down easy', 'skipped bath'), so parents can see how often each sitter has come and reuse a past night as a template ('Same as last Friday')."
+  ],
+  "screens": [
+    "Home: big 'Plan tonight' button, upcoming/last handoff card, staleness alerts with 'Still accurate' / 'Edit' actions, quick stats (handoffs this month, regular caregivers).",
+    "Tonight builder: step-by-step sheet (Caregiver -> Kids home -> Leave/back times and per-kid bedtime tweaks -> Extras/notes) with a live merged timeline below.",
+    "Briefing preview: the exact plain text that will be sent, rendered in a monospace-ish card, with section toggles, 'Share' (native bridge) and 'Copy' buttons, and a 'New since last time' banner when it applies.",
+    "Kids: list of kid cards; kid detail with allergies, meds, comfort items, and a routine editor (drag to reorder steps, offset stepper in 5-minute increments, default bedtime per weekday/weekend).",
+    "House & Contacts: emergency contacts, house info, rules, each with a 'last reviewed' chip.",
+    "Caregivers: saved caregivers with detail level, number of visits, last visit date; tap for their handoff history.",
+    "History: list of past handoffs with after-notes; 'Reuse this night' action.",
+    "Settings: export/import all data as JSON text (copy/paste), staleness threshold (3/6/12 months), 12/24h clock, reset data."
+  ],
+  "data_model": "localStorage key 'handoff.v1' holding one JSON object: { kids: [{id, name, birthday, allergies:[{text, severity:'mild'|'severe', updatedAt}], meds:[{name, doseNote, when, updatedAt}], comfort, calming, bedtimeWeekday:'19:30', bedtimeWeekend:'20:00', routine:[{id, label, offsetMin}], updatedAt}], contacts: [{id, name, role, phone, priority, updatedAt}], house: {address, wifiName, wifiPass, urgentCare, doorCode, pets, updatedAt, fields:{<key>:{value, updatedAt}}}, rules: [{id, text, updatedAt}], caregivers: [{id, name, level:'new'|'regular'|'family', lastBriefedAt, visits}], handoffs: [{id, date, caregiverId, kidIds, leaveAt, backBy, bedtimeOverrides:{kidId:'HH:MM'}, extras:[text], notes, briefingText, afterNote}], settings: {staleMonths:6, clock24:false}, reviewedAt: {<itemPath>: isoDate} }. Every editable item carries updatedAt (ISO) for change-diffing and staleness checks.",
+  "design": {
+    "bg": "#FBF7F2",
+    "accent": "#E8775A",
+    "vibe": "Warm, calm and reassuring, like a well-made fridge note: cream paper background, coral accent, soft sage (#7FA58B) for 'all good' states, deep ink (#2B2A33) text. Rounded 16px cards, generous spacing, friendly rounded sans (system-ui with a rounded feel), small kid-avatar circles with initials in pastel colors. The timeline is a vertical line with time pills. Severe allergies use a muted red (#C84B4B) badge with a warning icon. Large tap targets so it works one-handed while heading out the door."
+  },
+  "test_scenarios": [
+    "First run: empty state guides the user to add a kid. Add 'Ava' (age 4, bedtime 19:30, severe peanut allergy) and 'Leo' (age 7, bedtime 20:15). Both persist after reloading the page.",
+    "Routine math: give Ava the steps Bath -45, Books -15, Lights out 0. In Tonight builder with weekday bedtime the timeline shows 6:45 PM Bath, 7:15 PM Books, 7:30 PM Lights out. Override Ava's bedtime to 20:00 and all three times shift by 30 minutes.",
+    "Merged timeline: with both kids ticked, the timeline is sorted by time across kids and each entry shows the kid's initial avatar. Untick Leo and his steps disappear.",
+    "Briefing levels: create caregiver 'Maya' as New and generate a briefing. It includes address, Wi-Fi, urgent care, all contacts, and the peanut allergy at the very top marked severe. Switch Maya to Family and the briefing drops house info but still keeps allergies at the top.",
+    "Share/copy: tapping Share calls the native share bridge with the full text (or falls back to clipboard with a toast in a plain browser). The handoff is saved to History and Maya's visit count increments.",
+    "What changed: after sending Maya a briefing, edit the Wi-Fi password and add a cashew allergy to Ava. Maya's next briefing starts with a 'New since last time' section listing exactly those two changes, and a brand-new caregiver's briefing has no such section.",
+    "Staleness: set the staleness threshold to 3 months and backdate an item via import (or set updatedAt in the past). Home shows a staleness alert, and tapping 'Still accurate' clears it and persists.",
+    "Reuse night: from History tap 'Reuse this night'. The Tonight builder is prefilled with the same caregiver, kids, extras and bedtime overrides, and leave/back times keep their clock values on today's date.",
+    "Export/import: export JSON, reset all data (with confirm), paste the JSON back in, and all kids, routines, caregivers and history are restored.",
+    "Edge cases: a kid with no routine steps still appears with just 'Bedtime' in the timeline. A back-by time earlier than leave time shows a validation message. Very long notes wrap correctly in the preview on a 360px-wide screen."
+  ]
+}

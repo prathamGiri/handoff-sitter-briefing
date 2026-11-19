@@ -1,0 +1,13 @@
+{
+  "ok": true,
+  "errors": [],
+  "screenshots": [
+    "_qa\\shots\\01-initial.png",
+    "_qa\\shots\\02-home.png",
+    "_qa\\shots\\03-tonight-timeline.png",
+    "_qa\\shots\\04-briefing-preview.png",
+    "_qa\\shots\\05-kid-routine.png",
+    "_qa\\shots\\06-history.png"
+  ],
+  "scenarioError": null
+}
